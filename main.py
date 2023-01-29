@@ -19,9 +19,11 @@ def main():
     if mode == "train":
 
         model_chosen = input("Which segmenation model to train? \n DeepLabV3+ (deeplab) \nUNet (unet) \nFCN (fcn) \nMobileNet+ (mobile)")
+        sample_size = 10    # take a sample of size x of dataset
+        res = 128   # img res
 
         # Train
-        X,Y, num_classes, rgb_vals = pp.read_dataset(ds_path, sample_size=10, res=128, mode="train")
+        X,Y, num_classes, rgb_vals = pp.read_dataset(ds_path, sample_size=sample_size, res=res, mode="train")
         t = Trainer(X,Y, batch_size=5)
         t.train(model_chosen=model_chosen, num_classes=num_classes, epochs=4)
     
@@ -29,9 +31,11 @@ def main():
 
         # model_path = input("Input path to root dataset directory (containing /train, /test folders)")
         model_path = '/home/nathan/Documents/final_project/saved_models/helen/helen_deeplab_no_aug.pth'
+        sample_size = 10
+        res = 256   # img res must be same as what it was trained for
 
         # Test
-        X,Y, num_classes, rgb_vals = pp.read_dataset(ds_path, sample_size=10, res=256, mode="test")
+        X,Y, num_classes, rgb_vals = pp.read_dataset(ds_path, sample_size=sample_size, res=res, mode="test")
         t = Tester(X,Y)
         model = torch.load(model_path, map_location=DEVICE)
         print("model loaded")

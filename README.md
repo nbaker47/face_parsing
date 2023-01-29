@@ -8,3 +8,5 @@ dataset/
         test/
 
 Then, passing the path to "dataset/" will work.
+
+clearer research is presented in notebooks/
