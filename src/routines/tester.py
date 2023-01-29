@@ -35,22 +35,26 @@ class Tester:
     def average(self, lst):
         return sum(lst) / len(lst)
 
-    # Helper functions from "https://github.com/HardevKhandhar/building-segmentation-image-processing/blob/main/geospatial_buildings.ipynb"
     # helper function for data visualization
-    def visualize(self, **images):
-        """
-        Plot images in one row
-        """
-        n_images = len(images)
-        plt.figure(figsize=(20,8))
-        for idx, (name, image) in enumerate(images.items()):
-            plt.subplot(1, n_images, idx + 1)
-            plt.xticks([]); 
-            plt.yticks([])
-            # get title from the parameter names
-            plt.title(name.replace('_',' ').title(), fontsize=20)
-            plt.imshow(image)
-        plt.show()
+    def visualize(self, original_images, ground_truth_masks, predicted_masks, ious):
+        
+        figure, axis = plt.subplots(5, 3, figsize=(10,10))
+        figure.suptitle('Original image                       Ground Truth                      Predicted', 
+             fontsize=14, fontweight='bold')
+
+        for x in range(len(original_images)):
+            axis[x,0].imshow(original_images[x])
+            axis[x,0].set_xticks([])
+            axis[x,0].set_yticks([])
+            axis[x,1].imshow(ground_truth_masks[x])
+            axis[x,1].set_xticks([])
+            axis[x,1].set_yticks([])
+            axis[x,2].title.set_text("IoU: " + str(ious[x]))
+            axis[x,2].imshow(predicted_masks[x])
+            axis[x,2].set_xticks([])
+            axis[x,2].set_yticks([])
+
+        return figure
 
     def reverse_one_hot(self, image):
         """
@@ -92,8 +96,10 @@ class Tester:
         f1s = []
         gts = []
         preds = []
-
         ds = self.test_dataset
+        original_images = []
+        ground_truth_masks = []
+        predicted_masks = []
 
         #predict
         for idx in range(len(ds)):
@@ -126,14 +132,11 @@ class Tester:
             iou = m.result().numpy()
             ious.append(iou)
 
-            # display first 5 images
-            if [idx][0] < 1:
-                print(f1)
-                self.visualize(
-                    original_image = image_vis[:,:,0],
-                    ground_truth_mask = gt_mask[0,:,:,],
-                    predicted_mask = pred_mask[0,:,:,],
-                )
+            # display images
+            if idx < 5:
+                original_images.append(image_vis[:,:,0])
+                ground_truth_masks.append(gt_mask[0,:,:,])
+                predicted_masks.append(pred_mask[0,:,:,])
 
             gts.append(gt_mask)
             preds.append(pred_mask)
@@ -146,6 +149,11 @@ class Tester:
                 im2 = Image.fromarray(gt_mask.squeeze(0).astype(np.uint8))
                 im2.save("/content/drive/MyDrive/helen_deeplab_no_aug_out/" + str(idx) + "_seg.png")
         
+
+        figure = self.visualize(original_images, ground_truth_masks, predicted_masks, ious)
+        figure.tight_layout()
+        plt.show()
+
         fs1_numpy = np.array(f1s)
         av_f1s = np.average(fs1_numpy, axis=0, weights=(fs1_numpy > 0))
         av_f1s_av = av_f1s.mean(axis=0)
