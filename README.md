@@ -1,3 +1,5 @@
+![img](demo/helen_test.png)
+
 Ensure Dataset directory structure is setup as follows:
 
 main.py
