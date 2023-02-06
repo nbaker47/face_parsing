@@ -21,7 +21,11 @@
   
 # Results
   
-![img](report/table.png)
+<p align="center">
+  ![img](report/table.png)
+</p>
+  
+
 
 
 ## License
