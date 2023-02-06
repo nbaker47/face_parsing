@@ -20,13 +20,8 @@
 ![img](report/2.png)
   
 # Results
-  
-<p align="center">
-  ![img](report/table.png)
-</p>
-  
 
-
+![img](report/table.png)
 
 ## License
 
