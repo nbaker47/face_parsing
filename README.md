@@ -8,7 +8,7 @@
 <li>Trained/tested on Helen, LaPa, and Microsoft's fully synthetic DS
 <li>Transfer learning tested on iBugMask300
 
-![img](report/1.png)
+![img](report/2.png)
 
 ## Usage
 
