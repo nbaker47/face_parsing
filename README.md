@@ -8,7 +8,7 @@
 
 # Process flow
   
-![img](report/1.png
+![img](report/1.png)
   
 # Preprocess flow
   
