@@ -41,8 +41,8 @@ class Trainer:
     self._val_ds = TrainDS(x_test, y_test)
 
     # Get train and val data loaders
-    self._train_loader = DataLoader(self._train_ds, batch_size=5, shuffle=True, num_workers=2)
-    self._valid_loader = DataLoader(self._val_ds, batch_size=2, shuffle=False, num_workers=1)
+    self._train_loader = DataLoader(self._train_ds, batch_size=batch_size, shuffle=True, num_workers=2)
+    self._valid_loader = DataLoader(self._val_ds, batch_size=batch_size, shuffle=False, num_workers=1)
   
     # Training few hyper parameters
     self.loss = loss = smp_utils.losses.BCELoss()

@@ -3,15 +3,12 @@ import torch.nn as nn
 from torchvision.models.vgg import VGG
 from torchvision import models
 
-n_classes = 12
-batch_size = 10
-# It accepts any image size multiple of 32.
-img_width = 512
-img_height = 512
+n_classes = 11
+batch_size = 12
+# accepts any image size multiple of 32.
+img_width = 128
+img_height = 128
 
-class FCN:
-    def __init__(self) -> None:
-        pass
 
 class encoder(VGG):
 	'''
@@ -105,11 +102,3 @@ class decoder(nn.Module):
 		x = self.score(x)
 
 		return x
-
-n_classes = 12
-batch_size = 10
-# It accepts any image size multiple of 32.
-img_width = 512
-img_height = 512
-
-

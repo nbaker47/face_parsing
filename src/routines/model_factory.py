@@ -13,8 +13,10 @@ class ModelFactory:
             self._model = unet.get_unet()
         
         elif model_chosen == "fcn":
-            unet = UNet("resnet101", "imagenet", num_classes, "softmax2d")
-            self._model = unet.get_unet()
+            fcn = FCN()
+
+        elif model_chosen == "mobile":
+            mobile = None
         
         return None
 

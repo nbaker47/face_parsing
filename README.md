@@ -1,12 +1,19 @@
 ![img](demo/helen_test.png)
 
-Ensure Dataset directory structure is setup as follows:
+# Foobar
 
-main.py
-dataset/
-        train/
-        test/
+<li>Segmentaion experiments using DepplabV3+, Unet, FCN, and Mobilenet
+<li>Trained/tested on Helen, LaPa, and Microsoft's fully synthetic DS
+<li>Transfer learning tested on iBugMask300
 
-Then, passing the path to "dataset/" will work.
 
-clearer research is presented in notebooks/
+
+## Usage
+
+<li> Consult the notebooks in notebooks/ for research results
+<li> Models such as true mobilenet and FCN can be found in src/models. These were later not used in the research.
+
+
+## License
+
+[MIT](https://choosealicense.com/licenses/mit/)

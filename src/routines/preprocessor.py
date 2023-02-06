@@ -19,17 +19,12 @@ class Preprocessor:
         return X,Y
 
     """Read dataset from disk"""
-    def read_dataset(self, dataset_root:str, sample_size:int=1000, res:int=128, normalize=False, mode="train"):
-
-        if mode == "test":
-            mod = "test/"
-        else:
-            mod = "train/"
+    def read_dataset(self, dataset_root_img:str, dataset_root_seg:str, sample_size:int=1000, res:int=128, normalize=False, mode="train"):
 
         """IMG"""
         #Capture training image info as a list
         train_images = []
-        for count, img_path in enumerate (sorted(glob.glob(os.path.join(dataset_root + mod, "*image.jpg")))):
+        for count, img_path in enumerate (sorted(glob.glob(os.path.join(dataset_root_img, "*.jpg")))):
 
             #Process images
             img = cv2.imread(img_path)
@@ -55,7 +50,7 @@ class Preprocessor:
         """MASK"""
         #Capture mask/label info as a list
         train_masks = [] 
-        for count, mask_path in enumerate(sorted(glob.glob(os.path.join(dataset_root + mod, "*label.png")))):
+        for count, mask_path in enumerate(sorted(glob.glob(os.path.join(dataset_root_seg, "*.png")))):
 
             #Process images
             mask = cv2.imread(mask_path, 0)    
