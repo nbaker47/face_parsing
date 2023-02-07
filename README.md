@@ -1,18 +1,31 @@
-![img](demo/helen_test.png)
+# Face Parsing in synthetic/real datasets with popular models
 
-# Foobar
+![img](report/test.png)
 
 <li>Segmentaion experiments using DepplabV3+, Unet, FCN, and Mobilenet
 <li>Trained/tested on Helen, LaPa, and Microsoft's fully synthetic DS
 <li>Transfer learning tested on iBugMask300
+  
+ ## Usage
 
+<li> All experiments found in "/notebooks"
+<li> .py Version of the code not up to date with notebooks... (found in "/src")
 
+# Process flow
+  
+![img](report/1.png)
+  
+# Preprocess flow
+  
+![img](report/2.png)
+  
+# Results
 
-## Usage
+![img](report/table.png)
 
-<li> Consult the notebooks in notebooks/ for research results
-<li> Models such as true mobilenet and FCN can be found in src/models. These were later not used in the research.
+# In the wild segments
 
+![img](report/replace.png)
 
 ## License
 
