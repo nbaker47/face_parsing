@@ -24,8 +24,12 @@
 ![img](report/table.png)
 
 # In the wild segments
+In-the-wild face parses are then repositioned in the correct position. Demonstrating
+segmentation ability in crowded/ challenging environments.
 
+![img](report/3.png)
 ![img](report/replace.png)
+![img](report/replace2.png)
 
 ## License
 
