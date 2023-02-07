@@ -17,6 +17,12 @@
   
 # Preprocess flow
   
+  Before entering the moidel I use a Haar Cascade Classifier to identify points of interest in the image.
+  From these bounding boxes, an angle of rotation is determined to rotate the face so it is aligned.
+  The image is then normalised to imagenet standard and fed into the model. The landmark coordinates were
+  not used to center the image during testing, as I want to simulate as much of an in-the-wild environment
+  as possible. <br>
+
 ![img](report/2.png)
   
 # Results
