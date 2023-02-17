@@ -14,8 +14,6 @@ from PIL import Image
 import torchvision.transforms as T
 import torchvision.transforms.functional as F
 import random
-#import torchvision.transforms as T
-#import torchvision.transforms.functional as F
 import albumentations as albu
 import random
 import scipy
@@ -23,7 +21,6 @@ import torch
 import os
 import cv2
 import numpy as np
-#from google.colab.patches import cv2_imshow
 from matplotlib import pyplot as plt
 import re
 from torch.utils.data import DataLoader
@@ -33,6 +30,8 @@ import os
 import torch.nn as nn
 from torchvision import models, datasets, transforms, utils
 from torchvision.models.vgg import VGG
+import segmentation_models_pytorch as smp
+
 
 ranges = {'vgg16': ((0, 5), (5, 10), (10, 17), (17, 24), (24, 31))}
 cfg = {'vgg16': [64, 64, 'M', 128, 128, 'M', 256, 256, 256, 'M', 512, 512, 512, 'M', 512, 512, 512, 'M'],}
@@ -150,7 +149,7 @@ def save_predictions(model, ds):
 
       #gt_mask = scipy.signal.medfilt(gt_mask, 9)
 
-      print("saving", idx, "/", len(ds), end="\r")
+      #print("saving", idx, "/", len(ds), end="\r")
       
 
 class MyDataSet(torch.utils.data.Dataset):
@@ -225,19 +224,40 @@ def colour_code_segmentation(image, label_values):
 def average(lst):
     return sum(lst) / len(lst)
 
-def view_label_predictions(model, input_ds, num_classes ):
+#Hyperparamters
+ENCODER = 'resnet101'
+ENCODER_WEIGHTS = 'imagenet' #pretrained weighting
+#CLASSES = ["background", "skin", "nose", "right_eye", "left_eye", "right_brow", "left_brow", "right_ear", "left_ear", "mouth_interior", "top_lip", "bottom_lip", "neck", "hair", "beard", "clothing", "glasses", "headwear", "facewear"]
+ACTIVATION = "sigmoid" # softmax2d for multiclass segmentation
+num_classes = 12
+mobile = smp.Unet(
+    in_channels=3,
+    encoder_name="mobilenet_v2", 
+    encoder_weights=ENCODER_WEIGHTS, 
+    classes=num_classes, 
+    activation=ACTIVATION,
+    decoder_use_batchnorm = True,
+)
+
+def view_label_predictions(model, input_ds, num_classes, adapt_path="/home/nathan/Documents/final_project/saved_models/label_adapted_wood.pth", visualise=True ):
     # save model predictions
     save_predictions(model, input_ds)
 
-    """DS"""
-    train_x_path = "/home/nathan/Documents/final_project/datasets/label_adapter_test/images"
-    train_y_path = "/home/nathan/Documents/final_project/datasets/label_adapter_test/masks"
-    ds = MyDataSet(train_x_path, train_y_path, None )
+    rgb_vals = [ 0,1,2,3,4,5,6,7,8,9,10,11]
 
+    # create ds from model outputs and GT
+    x_path = "/home/nathan/Documents/final_project/datasets/label_adapter_test/images"
+    y_path = "/home/nathan/Documents/final_project/datasets/label_adapter_test/masks"
+    ds = MyDataSet(x_path, y_path, None )
+
+    #initialise fcn
     fcn = FCN8s(VGG16(cfg,ranges), num_classes)
     fcn.to(DEVICE)
     model = fcn
-    model.load_state_dict(torch.load('/home/nathan/Documents/final_project/saved_models/label_adapted.pth'))
+    #model.load_state_dict(torch.load('/home/nathan/Documents/final_project/saved_models/label_adapted_wood.pth'))
+
+    
+    #model = torch.load(adapt_path, map_location=DEVICE)
 
     f1s = []
     #predict
@@ -256,20 +276,22 @@ def view_label_predictions(model, input_ds, num_classes ):
         if len(f1) == num_classes:
           f1[f1 <0.1] = np.nan
           f1s.append(np.array(f1))
-        try:
-          if idx < 1:
-            visualize(
-                original_image = image[0,::],
-                ground_truth_mask = gt_mask,
-                predicted_mask = pred_mask,
-            )
-        except:
-          if idx < 1:
-            visualize(
-                original_image = image.cuda()[0,::],
-                ground_truth_mask = gt_mask.cuda(),
-                predicted_mask = pred_mask.cuda(),
-            )
+
+        if visualise == True:
+          try:
+            if idx < 1:
+              visualize(
+                  original_image = image[0,::],
+                  ground_truth_mask = gt_mask,
+                  predicted_mask = pred_mask,
+              )
+          except:
+            if idx < 1:
+              visualize(
+                  original_image = image.cuda()[0,::],
+                  ground_truth_mask = gt_mask.cuda(),
+                  predicted_mask = pred_mask.cuda(),
+              )
     
     fs1_numpy = np.array(f1s)
     av_f1s = np.nanmean(fs1_numpy, axis=0)
