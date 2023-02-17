@@ -2,8 +2,8 @@
 
 ![img](report/result_array.png)
 
-<li>Segmentaion experiments using DepplabV3+, Unet, FCN, and Mobilenet
-<li>Trained/tested on Helen, LaPa, and Microsoft's fully synthetic DS
+<li>Segmentaion experiments using DepplabV3+, Unet, FPN, and MobilenetV2
+<li>Trained/tested on Helen, LaPa, and Microsoft's fully synthetic face DS
 <li>Transfer learning tested on iBugMask300
   
  ## Usage
