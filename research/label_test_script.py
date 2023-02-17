@@ -39,6 +39,7 @@ rgb_vals = [ 0,1,2,3,4,5,6,7,8,9,10]
 DEVICE="cuda:0"
 
 
+# VGG Encoder for FCN
 class VGG16(VGG):
   
   def __init__(self, cfg, ranges, pretrained=True, model='vgg16', requires_grad=True, remove_fc=True, show_params=False):
@@ -83,6 +84,7 @@ class VGG16(VGG):
         in_channels = v
     return nn.Sequential(*layers)
 
+# FCN DECODER
 class FCN8s(nn.Module):
   
   def __init__(self, pretrained_model, n_classes):
@@ -124,6 +126,7 @@ class FCN8s(nn.Module):
     
     return x
 
+# SAVE preditions for consume by label adapter
 def save_predictions(model, ds):
   #predict
   for idx in range(len(ds)):
@@ -147,20 +150,13 @@ def save_predictions(model, ds):
       pred_mask = Image.fromarray(np.uint8(pred_mask)).save("/home/nathan/Documents/final_project/datasets/label_adapter_test/images/"+str(idx)+".png",quality='keep')
       gt_mask = Image.fromarray(np.uint8(gt_mask)).save("/home/nathan/Documents/final_project/datasets/label_adapter_test/masks/"+str(idx)+".png",quality='keep')
 
-      #gt_mask = scipy.signal.medfilt(gt_mask, 9)
-
-      #print("saving", idx, "/", len(ds), end="\r")
       
-
+# Label adapter DS (pred->gt)
 class MyDataSet(torch.utils.data.Dataset):
-
-  #CLASSES =  ["background","facial_skin","left_brow","right_brow","left_eye","right_eye", "nose","upper_lip","inner_mouth","lower_lip","hair"]
 
   def __init__(self, images_dir, masks_dir, coords_dir, preprocessing=None, classes=None,augmentation=None, training=True):
     super(MyDataSet, self).__init__()
     
-    # store the augmented tensors tensors
-    #self._x, self._y = x,y
     self.preprocessing = preprocessing
     self.augmentation = augmentation
 
@@ -224,21 +220,6 @@ def colour_code_segmentation(image, label_values):
 def average(lst):
     return sum(lst) / len(lst)
 
-#Hyperparamters
-ENCODER = 'resnet101'
-ENCODER_WEIGHTS = 'imagenet' #pretrained weighting
-#CLASSES = ["background", "skin", "nose", "right_eye", "left_eye", "right_brow", "left_brow", "right_ear", "left_ear", "mouth_interior", "top_lip", "bottom_lip", "neck", "hair", "beard", "clothing", "glasses", "headwear", "facewear"]
-ACTIVATION = "sigmoid" # softmax2d for multiclass segmentation
-num_classes = 12
-mobile = smp.Unet(
-    in_channels=3,
-    encoder_name="mobilenet_v2", 
-    encoder_weights=ENCODER_WEIGHTS, 
-    classes=num_classes, 
-    activation=ACTIVATION,
-    decoder_use_batchnorm = True,
-)
-
 def view_label_predictions(model, input_ds, num_classes, adapt_path="/home/nathan/Documents/final_project/saved_models/label_adapted_wood.pth", visualise=True ):
     # save model predictions
     save_predictions(model, input_ds)
@@ -255,8 +236,6 @@ def view_label_predictions(model, input_ds, num_classes, adapt_path="/home/natha
     fcn.to(DEVICE)
     model = fcn
     #model.load_state_dict(torch.load('/home/nathan/Documents/final_project/saved_models/label_adapted_wood.pth'))
-
-    
     #model = torch.load(adapt_path, map_location=DEVICE)
 
     f1s = []
@@ -301,3 +280,17 @@ def view_label_predictions(model, input_ds, num_classes, adapt_path="/home/natha
     #print ("Dataset MIoU = ", average(ious))
     print ("Dataset F1 = ", av_f1s)
     print ("Dataset F1 av = ", av_f1s_av)
+
+#Hyperparamters
+#ENCODER = 'resnet101'
+#ENCODER_WEIGHTS = 'imagenet' #pretrained weighting
+#ACTIVATION = "sigmoid" # softmax2d for multiclass segmentation
+#num_classes = 12
+#mobile = smp.Unet(
+#    in_channels=3,
+#    encoder_name="mobilenet_v2", 
+#    encoder_weights=ENCODER_WEIGHTS, 
+#    classes=num_classes, 
+#    activation=ACTIVATION,
+#    decoder_use_batchnorm = True,
+#)
