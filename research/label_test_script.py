@@ -38,6 +38,19 @@ cfg = {'vgg16': [64, 64, 'M', 128, 128, 'M', 256, 256, 256, 'M', 512, 512, 512, 
 rgb_vals = [ 0,1,2,3,4,5,6,7,8,9,10]
 DEVICE="cuda:0"
 
+#Hyperparamters for unet label_adapter
+ENCODER = 'resnet101'
+ENCODER_WEIGHTS = 'imagenet' #pretrained weighting
+ACTIVATION = "sigmoid" # softmax2d for multiclass segmentation
+num_classes = 12
+mobile = smp.Unet(
+    in_channels=3,
+    encoder_name="mobilenet_v2", 
+    encoder_weights=ENCODER_WEIGHTS, 
+    classes=num_classes, 
+    activation=ACTIVATION,
+    decoder_use_batchnorm = True,
+)
 
 # VGG Encoder for FCN
 class VGG16(VGG):
@@ -232,11 +245,11 @@ def view_label_predictions(model, input_ds, num_classes, adapt_path="/home/natha
     ds = MyDataSet(x_path, y_path, None )
 
     #initialise fcn
-    fcn = FCN8s(VGG16(cfg,ranges), num_classes)
-    fcn.to(DEVICE)
-    model = fcn
+    #fcn = FCN8s(VGG16(cfg,ranges), num_classes)
+    #fcn.to(DEVICE)
+    #model = fcn
     #model.load_state_dict(torch.load('/home/nathan/Documents/final_project/saved_models/label_adapted_wood.pth'))
-    #model = torch.load(adapt_path, map_location=DEVICE)
+    model = torch.load(adapt_path, map_location=DEVICE)
 
     f1s = []
     #predict
@@ -280,17 +293,3 @@ def view_label_predictions(model, input_ds, num_classes, adapt_path="/home/natha
     #print ("Dataset MIoU = ", average(ious))
     print ("Dataset F1 = ", av_f1s)
     print ("Dataset F1 av = ", av_f1s_av)
-
-#Hyperparamters
-#ENCODER = 'resnet101'
-#ENCODER_WEIGHTS = 'imagenet' #pretrained weighting
-#ACTIVATION = "sigmoid" # softmax2d for multiclass segmentation
-#num_classes = 12
-#mobile = smp.Unet(
-#    in_channels=3,
-#    encoder_name="mobilenet_v2", 
-#    encoder_weights=ENCODER_WEIGHTS, 
-#    classes=num_classes, 
-#    activation=ACTIVATION,
-#    decoder_use_batchnorm = True,
-#)

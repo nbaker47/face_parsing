@@ -11,7 +11,8 @@
 Research results can be found in /reasearch
 * "ibug.ipynb" -> Transfer learning handler
 * "helen.ipynb" -> Training and testing of models on Helen
-* "label_adapter.ipynb" -> Training of (to in-the-wild domain) Label Adapter
+* "label_adapter_fcn.ipynb" -> Training of FCN (to in-the-wild domain) Label Adapter
+* "label_adapter_unet.ipynb" -> Training of UNET (to in-the-wild domain) Label Adapter
 * "label_test_script.py" -> FCN and helper functions
 * "lapa.ipynb" -> Training and testing of models on LaPa
 * "mix.ipynb" -> Training and testing of models of domain mixed dataset (50:50) Synthetic:Real
