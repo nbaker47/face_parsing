@@ -47,8 +47,7 @@ Unfinished and outdated code (not .ipynb form) can be found in /outdated_src
 In-the-wild face parses are then repositioned in the correct position. Demonstrating
 segmentation ability in crowded/ challenging environments.
 
-![img](report/replace1.png)
-![img](report/replace2.png)
+![img](report/overlay.png)
 
 ## License
 
