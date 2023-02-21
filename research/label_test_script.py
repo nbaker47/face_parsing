@@ -191,7 +191,7 @@ class MyDataSet(torch.utils.data.Dataset):
     image = torch.tensor(image)
 
     #onehot
-    one_hot_Y = torch.nn.functional.one_hot(torch.tensor(mask).to(torch.int64), 11).float()
+    one_hot_Y = torch.nn.functional.one_hot(torch.tensor(mask).to(torch.int64), 12).float()
 
     return (image.permute(2,0,1).float(), one_hot_Y.permute(2,0,1).float())
 
@@ -271,14 +271,14 @@ def view_label_predictions(model, input_ds, num_classes, adapt_path="/home/natha
 
         if visualise == True:
           try:
-            if idx < 1:
+            if idx < 4:
               visualize(
                   original_image = image[0,::],
                   ground_truth_mask = gt_mask,
                   predicted_mask = pred_mask,
               )
           except:
-            if idx < 1:
+            if idx < 4:
               visualize(
                   original_image = image.cuda()[0,::],
                   ground_truth_mask = gt_mask.cuda(),
