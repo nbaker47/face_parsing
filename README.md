@@ -1,6 +1,6 @@
 # Face Parsing in synthetic/real datasets with popular models
 
-![img](report/result_array.png)
+![img](report/2result.png)
 
 <li>Segmentaion experiments using DepplabV3+, Unet, FPN, and MobilenetV2
 <li>Trained/tested on Helen, LaPa, and Microsoft's fully synthetic face DS
@@ -43,11 +43,6 @@ Unfinished and outdated code (not .ipynb form) can be found in /outdated_src
 ### LaPa Test Results (Models trained on LaPa)
 ![img](report/lapa_test_table.png)
 
-# In the wild segments
-In-the-wild face parses are then repositioned in the correct position. Demonstrating
-segmentation ability in crowded/ challenging environments.
-
-![img](report/2result.png)
 
 ## License
 
