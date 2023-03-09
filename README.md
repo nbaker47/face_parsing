@@ -18,7 +18,9 @@ Research results can be found in /reasearch
 * "mix.ipynb" -> Training and testing of models of domain mixed dataset (50:50) Synthetic:Real
 * "wood.ipynb" -> Training and testing of models of purely synthetic face data
 
-Unfinished and outdated code (not .ipynb form) can be found in /outdated_src
+Unfinished and outdated scripts can be found in /outdated_src </br>
+
+If you wish to repeat these experiments, you must ensure that the file paths match the ones used in my notebooks. The model weights/saved models used in my experiemnts can be found here: https://drive.google.com/file/d/1PPOSVSgwNE61uy9Zk5UgiXfTZckxgPEK/view?usp=sharing (They are not included in this repo due to their large file size). If using the saved models, please ensure you are using the subsquent model for naked predictions, and then adapting those predictions with the corresponding label adapter (as described in my paper).
 
 
 # Training Flow
