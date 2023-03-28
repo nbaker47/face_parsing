@@ -1,6 +1,5 @@
 # Face Parsing in synthetic/real datasets with popular models
 
-![img](report/2result.png)
 
 <li>Segmentaion experiments using DepplabV3+, Unet, FPN, and MobilenetV2
 <li>Trained/tested on Helen, LaPa, and Microsoft's fully synthetic face DS
